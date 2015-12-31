@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string>
+#include <cstdlib>
 
 class Game {
 private:
@@ -208,7 +209,7 @@ private:
 				this->changeToBoardGame();
 			}
 			else switch (this->board.nivel) {
-			case 1: break;
+			case 1: this->easyMode(keyPressed); break;
 			case 2: break;
 			case 3: break;
 			case 4: this->multiplayerMode(keyPressed);
@@ -374,6 +375,218 @@ private:
 				this->setDifficulty(4);
 				this->changeToBoardGame();
 			}
+		}
+	}
+	//Easy Mode
+	void easyMode(int keyPressed) {
+		switch (keyPressed) {
+		case 1:
+			if (this->board.table[2][0] == ' ') {
+				this->board.table[2][0] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 2:
+			if (this->board.table[2][1] == ' ') {
+				this->board.table[2][1] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 3:
+			if (this->board.table[2][2] == ' ') {
+				this->board.table[2][2] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+			    win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 4:
+			if (this->board.table[1][0] == ' ') {
+				this->board.table[1][0] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 5:
+			if (this->board.table[1][1] == ' ') {
+				this->board.table[1][1] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 6:
+			if (this->board.table[1][2] == ' ') {
+				this->board.table[1][2] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 7:
+			if (this->board.table[0][0] == ' ') {
+				this->board.table[0][0] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 8:
+			if (this->board.table[0][1] == ' ') {
+				this->board.table[0][1] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		case 9:
+			if (this->board.table[0][2] == ' ') {
+				this->board.table[0][2] = 'X';
+				int win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->aiEasyMove();
+				win = checkForWin();
+				if (this->checkForGame(win)) break;
+				this->message = " Is your turn! ";
+			}
+			else {
+				this->message = "You can't put your mark there.";
+			}
+			break;
+		default: break;
+		}
+	}
+	//A.I. Easy move.
+	void aiEasyMove() {
+		this->message = "Computer loading...";
+		int move = 1 + (rand() % (int)(9 - 1 + 1));
+		switch (move) {
+		case 1:
+			if (this->board.table[2][0] == ' ') {
+				this->board.table[2][0] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 2:
+			if (this->board.table[2][1] == ' ') {
+				this->board.table[2][1] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 3:
+			if (this->board.table[2][2] == ' ') {
+				this->board.table[2][2] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 4:
+			if (this->board.table[1][0] == ' ') {
+				this->board.table[1][0] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 5:
+			if (this->board.table[1][1] == ' ') {
+				this->board.table[1][1] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 6:
+			if (this->board.table[1][2] == ' ') {
+				this->board.table[1][2] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 7:
+			if (this->board.table[0][0] == ' ') {
+				this->board.table[0][0] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 8:
+			if (this->board.table[0][1] == ' ') {
+				this->board.table[0][1] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		case 9:
+			if (this->board.table[0][2] == ' ') {
+				this->board.table[0][2] = 'O';
+			}
+			else {
+				this->aiEasyMove();
+			}
+			break;
+		default: break;
 		}
 	}
 	//Mode Multiplayer
