@@ -209,9 +209,9 @@ private:
 				this->changeToBoardGame();
 			}
 			else switch (this->board.nivel) {
-			case 1: this->easyMode(keyPressed); break;
-			case 2: break;
-			case 3: break;
+			case 1: this->aiMode(keyPressed); break;
+			case 2: this->aiMode(keyPressed); break;
+			case 3: this->aiMode(keyPressed); break;
 			case 4: this->multiplayerMode(keyPressed);
 			default: break;
 			}
@@ -378,14 +378,16 @@ private:
 		}
 	}
 	//Easy Mode
-	void easyMode(int keyPressed) {
+	void aiMode(int keyPressed) {
 		switch (keyPressed) {
 		case 1:
 			if (this->board.table[2][0] == ' ') {
 				this->board.table[2][0] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel==1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -399,7 +401,9 @@ private:
 				this->board.table[2][1] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -413,8 +417,10 @@ private:
 				this->board.table[2][2] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
-			    win = checkForWin();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
+				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
 			}
@@ -427,7 +433,9 @@ private:
 				this->board.table[1][0] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -441,7 +449,9 @@ private:
 				this->board.table[1][1] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -455,7 +465,9 @@ private:
 				this->board.table[1][2] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -469,7 +481,9 @@ private:
 				this->board.table[0][0] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -483,7 +497,9 @@ private:
 				this->board.table[0][1] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -497,7 +513,9 @@ private:
 				this->board.table[0][2] = 'X';
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->aiEasyMove();
+				if (this->board.nivel == 1) this->aiEasyMove();
+				else if (this->board.nivel == 2) this->aiNormalMove();
+				else if (this->board.nivel == 3) this->aiHardMove();
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -584,6 +602,138 @@ private:
 			}
 			else {
 				this->aiEasyMove();
+			}
+			break;
+		default: break;
+		}
+	}
+
+	//AI hard move
+	void aiHardMove() {
+
+	}
+	//AI normal move
+	int minMaxRecursiv(char table[3][3], bool turn, int pos, int x, int y, int status) {
+		if (status == 3) {
+			if (turn == true) {
+				table[x][y] = 'X';
+				int win = checkForWinMinMax(table), k;
+				int status = this->checkForGameMinMax(win);
+				if (status != 3) {
+					return status;
+				}
+			}
+			else if (turn == false) {
+				table[x][y] = 'O';
+				int win = checkForWinMinMax(table), k;
+				int status = this->checkForGameMinMax(win);
+				if (status != 3) {
+					return status;
+				}
+			}
+			int rez;
+			if (turn) rez = 1;
+			else rez = -1;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++) {
+					if (table[i][j] == ' ') {
+						char tableNew[3][3];
+						for (int y = 0; y < 3; y++)
+							for (int t = 0; t < 3; t++)
+								tableNew[y][t] = table[y][t];
+						int k = minMaxRecursiv(tableNew, !turn, pos, i, j, 3);
+						if (turn) {
+							if (k < rez) rez = k;
+						}
+						else {
+							if (k > rez) rez = k;
+						}
+					}
+				}
+			return rez;
+		}
+	}
+	void aiNormalMove() {
+		int pos = 0, move,castig=0;
+		this->message = "Computer loading...";
+		for (int i = 2; i >= 0; i--)
+			for (int j = 0; j < 3; j++) {
+				pos++;
+				if (this->board.table[i][j] == ' ') {
+					char tableNew[3][3];
+					for (int y = 0; y < 3; y++)
+						for (int t = 0; t < 3; t++)
+							tableNew[y][t] = this->board.table[y][t];
+					move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
+					if (move == 1) {
+						move = pos;
+						castig = 1;
+						i = -1; j = 3;
+						break;
+					}
+				}
+			}
+		if (castig==0) for (int i = 2; i >= 0; i--)
+			for (int j = 0; j < 3; j++) {
+				pos++;
+				if (this->board.table[i][j] == ' ') {
+					char tableNew[3][3];
+					for (int y = 0; y < 3; y++)
+						for (int t = 0; t < 3; t++)
+							tableNew[y][t] = this->board.table[y][t];
+					move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
+					std::cout << move << '\n'; system("pause");
+					if (move == 0) {
+						move = pos;
+						i = -1; j = 3;
+						break;
+					}
+				}
+			}
+		switch (move) {
+		case 1:
+			if (this->board.table[2][0] == ' ') {
+				this->board.table[2][0] = 'O';
+			}
+			break;
+		case 2:
+			if (this->board.table[2][1] == ' ') {
+				this->board.table[2][1] = 'O';
+			}
+			break;
+		case 3:
+			if (this->board.table[2][2] == ' ') {
+				this->board.table[2][2] = 'O';
+			}
+			break;
+		case 4:
+			if (this->board.table[1][0] == ' ') {
+				this->board.table[1][0] = 'O';
+			}
+			break;
+		case 5:
+			if (this->board.table[1][1] == ' ') {
+				this->board.table[1][1] = 'O';
+			}
+			break;
+		case 6:
+			if (this->board.table[1][2] == ' ') {
+				this->board.table[1][2] = 'O';
+			}
+			break;
+		case 7:
+			if (this->board.table[0][0] == ' ') {
+				this->board.table[0][0] = 'O';
+			}
+			break;
+		case 8:
+			if (this->board.table[0][1] == ' ') {
+				this->board.table[0][1] = 'O';
+			}
+			break;
+		case 9:
+			if (this->board.table[0][2] == ' ') {
+				this->board.table[0][2] = 'O';
 			}
 			break;
 		default: break;
@@ -752,6 +902,47 @@ private:
 			this->board.stop = true;
 		}
 		return this->board.stop;
+	}
+	//Check MINMAX WIN
+	int checkForWinMinMax(char table[3][3]) {
+		if (table[1][1] != ' ' && table[0][0] == table[1][1] && table[2][2] == table[1][1])
+			if (table[1][1] == 'X') return 1;
+			else return 2;
+		else if (table[1][1] != ' ' && table[0][2] == table[1][1] && table[2][0] == table[1][1])
+			if (table[1][1] == 'X') return 1;
+			else return 2;
+		else if (table[0][1] != ' ' && table[0][0] == table[0][1] && table[0][2] == table[0][1])
+			if (table[0][1] == 'X') return 1;
+			else return 2;
+		else if (table[1][1] != ' ' && table[1][0] == table[1][1] && table[1][2] == table[1][1])
+			if (table[1][1] == 'X') return 1;
+			else return 2;
+		else if (table[2][1] != ' ' && table[2][0] == table[2][1] && table[2][2] == table[2][1])
+			if (table[2][1] == 'X') return 1;
+			else return 2;
+		else if (table[1][0] != ' ' && table[0][0] == table[1][0] && table[2][0] == table[1][0])
+			if (table[1][0] == 'X') return 1;
+			else return 2;
+		else if (table[1][1] != ' ' && table[0][1] == table[1][1] && table[2][1] == table[1][1])
+			if (table[1][1] == 'X') return 1;
+			else return 2;
+		else if (table[1][2] != ' ' && table[0][2] == table[1][2] && table[2][2] == table[1][2])
+			if (table[1][2] == 'X') return 1;
+			else return 2;
+			int remize = 0;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++)
+					if (table[i][j] == ' ') remize = 1;
+			if (remize) return 0;
+			return 3;
+	}
+	int checkForGameMinMax(int win) {
+		if (win) {
+			if (win == 1) { return -1; }
+			else if (win == 2) { return 1; }
+			else if (win == 0) { return 0; }
+		}
+		return 3;
 	}
 public:
 	//Porneste aplicatia.
