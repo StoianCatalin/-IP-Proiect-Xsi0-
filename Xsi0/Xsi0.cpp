@@ -607,10 +607,140 @@ private:
 		default: break;
 		}
 	}
-
+	//AiLastMove
+	int CheckForLastMove() {
+		if (this->board.table[0][0] == ' ') {
+			if (this->board.table[0][1] == this->board.table[0][2] && this->board.table[0][1] == 'X') return 7;
+			if (this->board.table[1][0] == this->board.table[2][0] && this->board.table[1][0] == 'X') return 7;
+			if (this->board.table[1][1] == this->board.table[2][2] && this->board.table[1][1] == 'X') return 7;
+		}
+		if (this->board.table[0][1] == ' ') {
+			if (this->board.table[0][0] == this->board.table[0][2] && this->board.table[0][0] == 'X') return 8;
+			if (this->board.table[1][1] == this->board.table[2][1] && this->board.table[1][1] == 'X') return 8;
+		}
+		if (this->board.table[0][2] == ' ') {
+			if (this->board.table[0][0] == this->board.table[0][1] && this->board.table[0][1] == 'X') return 9;
+			if (this->board.table[1][0] == this->board.table[2][0] && this->board.table[1][0] == 'X') return 9;
+			if (this->board.table[1][1] == this->board.table[2][0] && this->board.table[1][1] == 'X') return 9;
+		}
+		if (this->board.table[1][0] == ' ') {
+			if (this->board.table[1][1] == this->board.table[1][2] && this->board.table[0][1] == 'X') return 4;
+			if (this->board.table[0][0] == this->board.table[2][0] && this->board.table[0][0] == 'X') return 4;
+		}
+		if (this->board.table[1][1] == ' ') {
+			if (this->board.table[0][1] == this->board.table[2][1] && this->board.table[0][1] == 'X') return 5;
+			if (this->board.table[1][0] == this->board.table[1][2] && this->board.table[1][0] == 'X') return 5;
+			if (this->board.table[0][0] == this->board.table[2][2] && this->board.table[0][0] == 'X') return 5;
+			if (this->board.table[0][2] == this->board.table[2][0] && this->board.table[0][2] == 'X') return 5;
+		}
+		if (this->board.table[1][2] == ' ') {
+			if (this->board.table[0][2] == this->board.table[2][2] && this->board.table[0][2] == 'X') return 6;
+			if (this->board.table[1][0] == this->board.table[1][1] && this->board.table[1][0] == 'X') return 6;
+		}
+		if (this->board.table[2][0] == ' ') {
+			if (this->board.table[0][0] == this->board.table[1][0] && this->board.table[0][0] == 'X') return 1;
+			if (this->board.table[2][1] == this->board.table[2][2] && this->board.table[2][1] == 'X') return 1;
+			if (this->board.table[1][1] == this->board.table[0][2] && this->board.table[1][1] == 'X') return 1;
+		}
+		if (this->board.table[2][1] == ' ') {
+			if (this->board.table[2][0] == this->board.table[2][2] && this->board.table[2][0] == 'X') return 2;
+			if (this->board.table[1][1] == this->board.table[0][1] && this->board.table[1][1] == 'X') return 2;
+		}
+		if (this->board.table[2][2] == ' ') {
+			if (this->board.table[0][0] == this->board.table[1][1] && this->board.table[0][0] == 'X') return 3;
+			if (this->board.table[2][1] == this->board.table[2][0] && this->board.table[2][1] == 'X') return 3;
+			if (this->board.table[1][2] == this->board.table[0][2] && this->board.table[1][2] == 'X') return 3;
+		}
+		return 0;
+	}
 	//AI hard move
 	void aiHardMove() {
-
+		int pos = 0, move, castig = 0;
+		this->message = "Computer loading...";
+		move = this->CheckForLastMove();
+		if (move == 0) {
+			for (int i = 2; i >= 0; i--)
+				for (int j = 0; j < 3; j++) {
+					pos++;
+					if (this->board.table[i][j] == ' ') {
+						char tableNew[3][3];
+						for (int y = 0; y < 3; y++)
+							for (int t = 0; t < 3; t++)
+								tableNew[y][t] = this->board.table[y][t];
+						move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
+						if (move == 1) {
+							move = pos;
+							castig = 1;
+							i = -1; j = 3;
+							break;
+						}
+					}
+				}
+			if (castig == 0) for (int i = 2; i >= 0; i--)
+				for (int j = 0; j < 3; j++) {
+					pos++;
+					if (this->board.table[i][j] == ' ') {
+						char tableNew[3][3];
+						for (int y = 0; y < 3; y++)
+							for (int t = 0; t < 3; t++)
+								tableNew[y][t] = this->board.table[y][t];
+						move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
+						if (move >= 0) {
+							move = pos;
+							i = -1; j = 3;
+							break;
+						}
+					}
+				}
+		}
+		switch (move) {
+		case 1:
+			if (this->board.table[2][0] == ' ') {
+				this->board.table[2][0] = 'O';
+			}
+			break;
+		case 2:
+			if (this->board.table[2][1] == ' ') {
+				this->board.table[2][1] = 'O';
+			}
+			break;
+		case 3:
+			if (this->board.table[2][2] == ' ') {
+				this->board.table[2][2] = 'O';
+			}
+			break;
+		case 4:
+			if (this->board.table[1][0] == ' ') {
+				this->board.table[1][0] = 'O';
+			}
+			break;
+		case 5:
+			if (this->board.table[1][1] == ' ') {
+				this->board.table[1][1] = 'O';
+			}
+			break;
+		case 6:
+			if (this->board.table[1][2] == ' ') {
+				this->board.table[1][2] = 'O';
+			}
+			break;
+		case 7:
+			if (this->board.table[0][0] == ' ') {
+				this->board.table[0][0] = 'O';
+			}
+			break;
+		case 8:
+			if (this->board.table[0][1] == ' ') {
+				this->board.table[0][1] = 'O';
+			}
+			break;
+		case 9:
+			if (this->board.table[0][2] == ' ') {
+				this->board.table[0][2] = 'O';
+			}
+			break;
+		default: break;
+		}
 	}
 	//AI normal move
 	int minMaxRecursiv(char table[3][3], bool turn, int pos, int x, int y, int status) {
@@ -682,8 +812,7 @@ private:
 						for (int t = 0; t < 3; t++)
 							tableNew[y][t] = this->board.table[y][t];
 					move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
-					std::cout << move << '\n'; system("pause");
-					if (move == 0) {
+					if (move >= 0) {
 						move = pos;
 						i = -1; j = 3;
 						break;
