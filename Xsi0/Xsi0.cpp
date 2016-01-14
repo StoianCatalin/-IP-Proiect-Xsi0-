@@ -17,7 +17,7 @@ private:
 		char table[3][3];
 		int nivel, scoreBoard1, scoreBoard2, lastWinner;
 		bool stop;
-		bool turn1, turn2;
+		bool turn1, turn2, turn, facut;
 		bool active;
 	}board;
 	struct MainMenu {
@@ -31,6 +31,9 @@ private:
 	struct credentials {
 		bool active;
 	} cred;
+	struct fiz {
+		int status, adancime;
+	};
 private:
 	//Initialize game parameters.
 	void initializeGameParameters() {
@@ -57,6 +60,8 @@ private:
 		this->board.active = false;
 		this->board.stop = false;
 		this->board.lastWinner = 0;
+		this->board.turn = false;
+		this->board.facut = true;
 		this->board.scoreBoard1 = 0;
 		this->board.scoreBoard2 = 0;
 		for (int i = 0; i < 3; i++)
@@ -70,6 +75,7 @@ private:
 		else if (this->board.turn2) this->message = "Player2 is first!";
 		this->board.active = false;
 		this->board.stop = false;
+		this->board.facut = true;
 		if (this->board.lastWinner == 1) this->board.scoreBoard1++;
 		else if (this->board.lastWinner == 2) this->board.scoreBoard2++;
 		this->board.lastWinner = 0;
@@ -206,7 +212,18 @@ private:
 			//We are in select level menu.
 			if (this->board.stop) {
 				this->restartGame();
+				this->board.turn = !this->board.turn;
 				this->changeToBoardGame();
+				if (this->board.turn==true && this->board.facut==true) {
+					int win = checkForWin();
+					if (this->checkForGame(win));
+					this->board.turn = true;
+					this->board.facut = false;
+					this->aiEasyMove();
+					win = checkForWin();
+					if (this->checkForGame(win));
+					this->message = " It's your turn! ";
+				}
 			}
 			else switch (this->board.nivel) {
 			case 1: this->aiMode(keyPressed); break;
@@ -386,11 +403,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel==1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -402,11 +420,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -418,11 +437,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -434,11 +454,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -450,11 +471,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -466,11 +488,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -482,8 +505,9 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
 				this->message = " Is your turn! ";
@@ -498,11 +522,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->board.table[1][1] = '0' : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -514,11 +539,12 @@ private:
 				int win = checkForWin();
 				if (this->checkForGame(win)) break;
 				if (this->board.nivel == 1) this->aiEasyMove();
-				else if (this->board.nivel == 2) this->aiNormalMove();
-				else if (this->board.nivel == 3) this->aiHardMove();
+				else if (this->board.nivel == 2) this->board.facut ? this->aiEasyMove() : this->aiNormalMove();
+				else if (this->board.nivel == 3) this->board.facut ? this->aiEasyMove() : this->aiHardMove();
+				this->board.facut = false;
 				win = checkForWin();
 				if (this->checkForGame(win)) break;
-				this->message = " Is your turn! ";
+				this->message = " It's your turn! ";
 			}
 			else {
 				this->message = "You can't put your mark there.";
@@ -608,57 +634,59 @@ private:
 		}
 	}
 	//AiLastMove
-	int CheckForLastMove() {
+	int CheckForLastMoveFor(char mark) {
 		if (this->board.table[0][0] == ' ') {
-			if (this->board.table[0][1] == this->board.table[0][2] && this->board.table[0][1] == 'X') return 7;
-			if (this->board.table[1][0] == this->board.table[2][0] && this->board.table[1][0] == 'X') return 7;
-			if (this->board.table[1][1] == this->board.table[2][2] && this->board.table[1][1] == 'X') return 7;
+			if (this->board.table[0][1] == this->board.table[0][2] && this->board.table[0][1] == mark) return 7;
+			if (this->board.table[1][0] == this->board.table[2][0] && this->board.table[1][0] == mark) return 7;
+			if (this->board.table[1][1] == this->board.table[2][2] && this->board.table[1][1] == mark) return 7;
 		}
 		if (this->board.table[0][1] == ' ') {
-			if (this->board.table[0][0] == this->board.table[0][2] && this->board.table[0][0] == 'X') return 8;
-			if (this->board.table[1][1] == this->board.table[2][1] && this->board.table[1][1] == 'X') return 8;
+			if (this->board.table[0][0] == this->board.table[0][2] && this->board.table[0][0] == mark) return 8;
+			if (this->board.table[1][1] == this->board.table[2][1] && this->board.table[1][1] == mark) return 8;
 		}
 		if (this->board.table[0][2] == ' ') {
-			if (this->board.table[0][0] == this->board.table[0][1] && this->board.table[0][1] == 'X') return 9;
-			if (this->board.table[1][0] == this->board.table[2][0] && this->board.table[1][0] == 'X') return 9;
-			if (this->board.table[1][1] == this->board.table[2][0] && this->board.table[1][1] == 'X') return 9;
+			if (this->board.table[0][0] == this->board.table[0][1] && this->board.table[0][1] == mark) return 9;
+			if (this->board.table[1][2] == this->board.table[2][2] && this->board.table[1][0] == mark) return 9;
+			if (this->board.table[1][1] == this->board.table[2][0] && this->board.table[1][1] == mark) return 9;
 		}
 		if (this->board.table[1][0] == ' ') {
-			if (this->board.table[1][1] == this->board.table[1][2] && this->board.table[0][1] == 'X') return 4;
-			if (this->board.table[0][0] == this->board.table[2][0] && this->board.table[0][0] == 'X') return 4;
+			if (this->board.table[1][1] == this->board.table[1][2] && this->board.table[0][1] == mark) return 4;
+			if (this->board.table[0][0] == this->board.table[2][0] && this->board.table[0][0] == mark) return 4;
 		}
 		if (this->board.table[1][1] == ' ') {
-			if (this->board.table[0][1] == this->board.table[2][1] && this->board.table[0][1] == 'X') return 5;
-			if (this->board.table[1][0] == this->board.table[1][2] && this->board.table[1][0] == 'X') return 5;
-			if (this->board.table[0][0] == this->board.table[2][2] && this->board.table[0][0] == 'X') return 5;
-			if (this->board.table[0][2] == this->board.table[2][0] && this->board.table[0][2] == 'X') return 5;
+			if (this->board.table[0][1] == this->board.table[2][1] && this->board.table[0][1] == mark) return 5;
+			if (this->board.table[1][0] == this->board.table[1][2] && this->board.table[1][0] == mark) return 5;
+			if (this->board.table[0][0] == this->board.table[2][2] && this->board.table[0][0] == mark) return 5;
+			if (this->board.table[0][2] == this->board.table[2][0] && this->board.table[0][2] == mark) return 5;
 		}
 		if (this->board.table[1][2] == ' ') {
-			if (this->board.table[0][2] == this->board.table[2][2] && this->board.table[0][2] == 'X') return 6;
-			if (this->board.table[1][0] == this->board.table[1][1] && this->board.table[1][0] == 'X') return 6;
+			if (this->board.table[0][2] == this->board.table[2][2] && this->board.table[0][2] == mark) return 6;
+			if (this->board.table[1][0] == this->board.table[1][1] && this->board.table[1][0] == mark) return 6;
 		}
 		if (this->board.table[2][0] == ' ') {
-			if (this->board.table[0][0] == this->board.table[1][0] && this->board.table[0][0] == 'X') return 1;
-			if (this->board.table[2][1] == this->board.table[2][2] && this->board.table[2][1] == 'X') return 1;
-			if (this->board.table[1][1] == this->board.table[0][2] && this->board.table[1][1] == 'X') return 1;
+			if (this->board.table[0][0] == this->board.table[1][0] && this->board.table[0][0] == mark) return 1;
+			if (this->board.table[2][1] == this->board.table[2][2] && this->board.table[2][1] == mark) return 1;
+			if (this->board.table[1][1] == this->board.table[0][2] && this->board.table[1][1] == mark) return 1;
 		}
 		if (this->board.table[2][1] == ' ') {
-			if (this->board.table[2][0] == this->board.table[2][2] && this->board.table[2][0] == 'X') return 2;
-			if (this->board.table[1][1] == this->board.table[0][1] && this->board.table[1][1] == 'X') return 2;
+			if (this->board.table[2][0] == this->board.table[2][2] && this->board.table[2][0] == mark) return 2;
+			if (this->board.table[1][1] == this->board.table[0][1] && this->board.table[1][1] == mark) return 2;
 		}
 		if (this->board.table[2][2] == ' ') {
-			if (this->board.table[0][0] == this->board.table[1][1] && this->board.table[0][0] == 'X') return 3;
-			if (this->board.table[2][1] == this->board.table[2][0] && this->board.table[2][1] == 'X') return 3;
-			if (this->board.table[1][2] == this->board.table[0][2] && this->board.table[1][2] == 'X') return 3;
+			if (this->board.table[0][0] == this->board.table[1][1] && this->board.table[0][0] == mark) return 3;
+			if (this->board.table[2][1] == this->board.table[2][0] && this->board.table[2][1] == mark) return 3;
+			if (this->board.table[1][2] == this->board.table[0][2] && this->board.table[1][2] == mark) return 3;
 		}
 		return 0;
 	}
 	//AI hard move
 	void aiHardMove() {
-		int pos = 0, move, castig = 0;
+		int pos = 0, goodMove, castig = 0, adancime, maxAdancime = 1000;
+		fiz move;
 		this->message = "Computer loading...";
-		move = this->CheckForLastMove();
-		if (move == 0) {
+		goodMove = this->CheckForLastMoveFor('O');
+		if (goodMove == 0) goodMove = this->CheckForLastMoveFor('X');
+		if (goodMove == 0)
 			for (int i = 2; i >= 0; i--)
 				for (int j = 0; j < 3; j++) {
 					pos++;
@@ -667,33 +695,26 @@ private:
 						for (int y = 0; y < 3; y++)
 							for (int t = 0; t < 3; t++)
 								tableNew[y][t] = this->board.table[y][t];
-						move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
-						if (move == 1) {
-							move = pos;
-							castig = 1;
-							i = -1; j = 3;
-							break;
+						adancime = 1;
+						move = minMaxRecursiv(tableNew, false, pos, adancime, i, j, 3);
+						if (move.status == 1 || move.status == 0) {
+							if (move.adancime < maxAdancime) {
+								goodMove = pos;
+								maxAdancime = move.adancime;
+							}
 						}
 					}
 				}
-			if (castig == 0) for (int i = 2; i >= 0; i--)
+		if (goodMove == 0) {
+			int k = 0;
+			for (int i = 2; i >= 0; i--) {
 				for (int j = 0; j < 3; j++) {
-					pos++;
-					if (this->board.table[i][j] == ' ') {
-						char tableNew[3][3];
-						for (int y = 0; y < 3; y++)
-							for (int t = 0; t < 3; t++)
-								tableNew[y][t] = this->board.table[y][t];
-						move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
-						if (move >= 0) {
-							move = pos;
-							i = -1; j = 3;
-							break;
-						}
-					}
+					k++;
+					if (this->board.table[i][j] == ' ') goodMove = k;
 				}
+			}
 		}
-		switch (move) {
+		switch (goodMove) {
 		case 1:
 			if (this->board.table[2][0] == ' ') {
 				this->board.table[2][0] = 'O';
@@ -743,27 +764,29 @@ private:
 		}
 	}
 	//AI normal move
-	int minMaxRecursiv(char table[3][3], bool turn, int pos, int x, int y, int status) {
+	fiz minMaxRecursiv(char table[3][3], bool turn, int pos, int adancime, int x, int y, int status) {
 		if (status == 3) {
 			if (turn == true) {
 				table[x][y] = 'X';
 				int win = checkForWinMinMax(table), k;
-				int status = this->checkForGameMinMax(win);
-				if (status != 3) {
+				fiz status;
+				status.status = this->checkForGameMinMax(win);
+				if (status.status != 3) {
 					return status;
 				}
 			}
 			else if (turn == false) {
 				table[x][y] = 'O';
 				int win = checkForWinMinMax(table), k;
-				int status = this->checkForGameMinMax(win);
-				if (status != 3) {
+				fiz status;
+				status.status = this->checkForGameMinMax(win);
+				if (status.status != 3) {
 					return status;
 				}
 			}
-			int rez;
-			if (turn) rez = 1;
-			else rez = -1;
+			fiz rez;
+			if (turn) rez.status = 1;
+			else rez.status = -1;
 			for (int i = 0; i < 3; i++)
 				for (int j = 0; j < 3; j++) {
 					if (table[i][j] == ' ') {
@@ -771,101 +794,78 @@ private:
 						for (int y = 0; y < 3; y++)
 							for (int t = 0; t < 3; t++)
 								tableNew[y][t] = table[y][t];
-						int k = minMaxRecursiv(tableNew, !turn, pos, i, j, 3);
+					    adancime++;
+						fiz k = minMaxRecursiv(tableNew, !turn, pos, adancime, i, j, 3);
 						if (turn) {
-							if (k < rez) rez = k;
+							if (k.status < rez.status) rez = k;
 						}
 						else {
-							if (k > rez) rez = k;
+							if (k.status > rez.status) rez = k;
 						}
 					}
 				}
+			rez.adancime = adancime;
 			return rez;
 		}
 	}
 	void aiNormalMove() {
-		int pos = 0, move,castig=0;
+		int pos = 0, goodMove, castig = 0, adancime, maxAdancime = 1000;
+		fiz move;
 		this->message = "Computer loading...";
-		for (int i = 2; i >= 0; i--)
-			for (int j = 0; j < 3; j++) {
-				pos++;
-				if (this->board.table[i][j] == ' ') {
-					char tableNew[3][3];
-					for (int y = 0; y < 3; y++)
-						for (int t = 0; t < 3; t++)
-							tableNew[y][t] = this->board.table[y][t];
-					move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
-					if (move == 1) {
-						move = pos;
-						castig = 1;
-						i = -1; j = 3;
-						break;
-					}
+		goodMove = this->CheckForLastMoveFor('O');
+		if (goodMove == 0) goodMove = this->CheckForLastMoveFor('X');
+		if (goodMove == 0) {
+			this->aiEasyMove();
+		}
+		else {
+			switch (goodMove) {
+			case 1:
+				if (this->board.table[2][0] == ' ') {
+					this->board.table[2][0] = 'O';
 				}
-			}
-		if (castig==0) for (int i = 2; i >= 0; i--)
-			for (int j = 0; j < 3; j++) {
-				pos++;
-				if (this->board.table[i][j] == ' ') {
-					char tableNew[3][3];
-					for (int y = 0; y < 3; y++)
-						for (int t = 0; t < 3; t++)
-							tableNew[y][t] = this->board.table[y][t];
-					move = minMaxRecursiv(tableNew, false, pos, i, j, 3);
-					if (move >= 0) {
-						move = pos;
-						i = -1; j = 3;
-						break;
-					}
+				break;
+			case 2:
+				if (this->board.table[2][1] == ' ') {
+					this->board.table[2][1] = 'O';
 				}
+				break;
+			case 3:
+				if (this->board.table[2][2] == ' ') {
+					this->board.table[2][2] = 'O';
+				}
+				break;
+			case 4:
+				if (this->board.table[1][0] == ' ') {
+					this->board.table[1][0] = 'O';
+				}
+				break;
+			case 5:
+				if (this->board.table[1][1] == ' ') {
+					this->board.table[1][1] = 'O';
+				}
+				break;
+			case 6:
+				if (this->board.table[1][2] == ' ') {
+					this->board.table[1][2] = 'O';
+				}
+				break;
+			case 7:
+				if (this->board.table[0][0] == ' ') {
+					this->board.table[0][0] = 'O';
+				}
+				break;
+			case 8:
+				if (this->board.table[0][1] == ' ') {
+					this->board.table[0][1] = 'O';
+				}
+				break;
+			case 9:
+				if (this->board.table[0][2] == ' ') {
+					this->board.table[0][2] = 'O';
+				}
+				break;
+			default: break;
 			}
-		switch (move) {
-		case 1:
-			if (this->board.table[2][0] == ' ') {
-				this->board.table[2][0] = 'O';
-			}
-			break;
-		case 2:
-			if (this->board.table[2][1] == ' ') {
-				this->board.table[2][1] = 'O';
-			}
-			break;
-		case 3:
-			if (this->board.table[2][2] == ' ') {
-				this->board.table[2][2] = 'O';
-			}
-			break;
-		case 4:
-			if (this->board.table[1][0] == ' ') {
-				this->board.table[1][0] = 'O';
-			}
-			break;
-		case 5:
-			if (this->board.table[1][1] == ' ') {
-				this->board.table[1][1] = 'O';
-			}
-			break;
-		case 6:
-			if (this->board.table[1][2] == ' ') {
-				this->board.table[1][2] = 'O';
-			}
-			break;
-		case 7:
-			if (this->board.table[0][0] == ' ') {
-				this->board.table[0][0] = 'O';
-			}
-			break;
-		case 8:
-			if (this->board.table[0][1] == ' ') {
-				this->board.table[0][1] = 'O';
-			}
-			break;
-		case 9:
-			if (this->board.table[0][2] == ' ') {
-				this->board.table[0][2] = 'O';
-			}
-			break;
-		default: break;
 		}
 	}
 	//Mode Multiplayer
@@ -1025,9 +1025,9 @@ private:
 	}
 	bool checkForGame(int win) {
 		if (win) {
-			if (win == 1) { this->message = "Player 1 is the winner! Press any key for back to menu..."; this->board.lastWinner = 1; }
-			else if (win == 2) { this->message = "Player 2 is the winner! Press any key for back to menu..."; this->board.lastWinner = 2; }
-			else if (win == 3) { this->message = "Nobody win! Press any key for back to menu..."; this->board.lastWinner = 0; }
+			if (win == 1) { this->message = "Player 1 is the winner! Press 'enter' for back to menu. Any key for continue the game."; this->board.lastWinner = 1; }
+			else if (win == 2) { this->message = "Player 2 is the winner! Press 'enter' for back to menu. Any key for continue the game."; this->board.lastWinner = 2; }
+			else if (win == 3) { this->message = "Nobody win! Press 'enter' for back to menu. Any key for continue the game."; this->board.lastWinner = 0; }
 			this->board.stop = true;
 		}
 		return this->board.stop;

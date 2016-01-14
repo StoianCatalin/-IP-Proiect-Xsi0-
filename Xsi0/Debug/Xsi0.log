@@ -1,5 +1,9 @@
 ﻿  Xsi0.cpp
-e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(750): warning C4101: 'k': unreferenced local variable
-e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(758): warning C4101: 'k': unreferenced local variable
-e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(785): warning C4715: 'Game::minMaxRecursiv': not all control paths return a value
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(219): warning C4390: ';': empty controlled statement found; is this the intent?
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(224): warning C4390: ';': empty controlled statement found; is this the intent?
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(771): warning C4101: 'k': unreferenced local variable
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(780): warning C4101: 'k': unreferenced local variable
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(812): warning C4101: 'adancime': unreferenced local variable
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(813): warning C4101: 'move': unreferenced local variable
+e:\facultate\[an1][sem1][ip]\xsi0\xsi0\xsi0.cpp(810): warning C4715: 'Game::minMaxRecursiv': not all control paths return a value
   Xsi0.vcxproj -> E:\Facultate\[AN1][SEM1][IP]\Xsi0\Debug\Xsi0.exe
